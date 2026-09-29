@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#090b11" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>StudyTube — Focus Player</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <span class="petal petal-1" aria-hidden="true"></span>
+    <span class="petal petal-2" aria-hidden="true"></span>
+    <span class="petal petal-3" aria-hidden="true"></span>
+    <span class="sparkle sparkle-1" aria-hidden="true">✦</span>
+    <span class="sparkle sparkle-2" aria-hidden="true">✧</span>
+    <span class="sparkle sparkle-3" aria-hidden="true">✦</span>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">▶</div>
+        <div>
+          <h1>StudyTube</h1>
+          <p>Local focus player</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="appearance-menu">
+          <button id="appearanceBtn" class="ghost-btn" type="button" aria-haspopup="true" aria-expanded="false">🎨 Appearance</button>
+          <div id="appearancePanel" class="appearance-panel hidden" role="menu" aria-label="Appearance settings">
+            <div class="appearance-section">
+              <h3>Theme</h3>
+              <div class="theme-grid" id="themeGrid">
+                <button type="button" class="theme-card" data-theme-choice="midnight">
+                  <span class="theme-check">✓</span>
+                  <span class="theme-swatch theme-swatch-midnight"></span>
+                  <span class="theme-name">Midnight</span>
+                </button>
+                <button type="button" class="theme-card" data-theme-choice="sakura">
+                  <span class="theme-check">✓</span>
+                  <span class="theme-swatch theme-swatch-sakura"></span>
+                  <span class="theme-name">Sakura</span>
+                </button>
+                <button type="button" class="theme-card" data-theme-choice="neon">
+                  <span class="theme-check">✓</span>
+                  <span class="theme-swatch theme-swatch-neon"></span>
+                  <span class="theme-name">Neon Forge</span>
+                </button>
+                <button type="button" class="theme-card" data-theme-choice="ocean">
+                  <span class="theme-check">✓</span>
+                  <span class="theme-swatch theme-swatch-ocean"></span>
+                  <span class="theme-name">Ocean Calm</span>
+                </button>
+                <button type="button" class="theme-card" data-theme-choice="sunset">
+                  <span class="theme-check">✓</span>
+                  <span class="theme-swatch theme-swatch-sunset"></span>
+                  <span class="theme-name">Sunset Bloom</span>
+                </button>
+                <button type="button" class="theme-card" data-theme-choice="paper">
+                  <span class="theme-check">✓</span>
+                  <span class="theme-swatch theme-swatch-paper"></span>
+                  <span class="theme-name">Paper Study</span>
+                </button>
+                <button type="button" class="theme-card" data-theme-choice="princess">
+                  <span class="theme-check">✓</span>
+                  <span class="theme-swatch theme-swatch-princess"></span>
+                  <span class="theme-name">Princess Bloom</span>
+                </button>
+              </div>
+            </div>
+            <div class="appearance-section">
+              <h3>Accent</h3>
+              <div class="accent-row" id="accentRow">
+                <button type="button" class="accent-dot accent-violet" data-accent-choice="violet" title="Violet" aria-label="Violet accent"></button>
+                <button type="button" class="accent-dot accent-blue" data-accent-choice="blue" title="Blue" aria-label="Blue accent"></button>
+                <button type="button" class="accent-dot accent-cyan" data-accent-choice="cyan" title="Cyan" aria-label="Cyan accent"></button>
+                <button type="button" class="accent-dot accent-green" data-accent-choice="green" title="Green" aria-label="Green accent"></button>
+                <button type="button" class="accent-dot accent-pink" data-accent-choice="pink" title="Pink" aria-label="Pink accent"></button>
+                <button type="button" class="accent-dot accent-orange" data-accent-choice="orange" title="Orange" aria-label="Orange accent"></button>
+              </div>
+            </div>
+            <div class="appearance-section">
+              <h3>Mode</h3>
+              <div class="segmented" id="modeRow" role="group" aria-label="Light, dark, or system mode">
+                <button type="button" class="mode-btn" data-mode-choice="light">Light</button>
+                <button type="button" class="mode-btn" data-mode-choice="dark">Dark</button>
+                <button type="button" class="mode-btn" data-mode-choice="system">System</button>
+              </div>
+            </div>
+            <div class="appearance-section appearance-row">
+              <h3>Motion</h3>
+              <div class="segmented" id="motionRow" role="group" aria-label="Animation level">
+                <button type="button" class="motion-btn" data-motion-choice="off">Off</button>
+                <button type="button" class="motion-btn" data-motion-choice="minimal">Minimal</button>
+                <button type="button" class="motion-btn" data-motion-choice="standard">Standard</button>
+                <button type="button" class="motion-btn" data-motion-choice="expressive">Expressive</button>
+              </div>
+            </div>
+            <button id="resetAppearanceBtn" type="button" class="ghost-btn small-action">Reset Appearance</button>
+          </div>
+        </div>
+        <label class="resume-setting">
+          <span>Resume</span>
+          <select id="resumeBehaviorSelect" aria-label="Resume behavior">
+            <option value="ask" selected>Ask every time</option>
+            <option value="always">Always resume</option>
+            <option value="never">Always start over</option>
+          </select>
+        </label>
+        <button id="focusModeBtn" class="ghost-btn" type="button">Focus Mode</button>
+        <button id="clearAllBtn" class="ghost-btn danger-text" type="button">Clear Data</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="player-section">
+        <div class="url-bar card">
+          <label for="youtubeUrl">Paste a YouTube video or playlist URL</label>
+          <div class="url-row">
+            <input id="youtubeUrl" type="text" autocomplete="off" spellcheck="false"
+              placeholder="https://www.youtube.com/watch?v=... or /playlist?list=..." />
+            <button id="loadBtn" class="primary-btn" type="button">Load</button>
+          </div>
+          <p id="statusText" class="status" aria-live="polite">Ready.</p>
+        </div>
+
+        <div class="video-card card">
+          <div id="playerWrap" class="player-wrap">
+            <div id="player" class="youtube-player"></div>
+
+            <div id="emptyState" class="empty-state">
+              <div class="empty-icon">▶</div>
+              <h2>Choose a study video</h2>
+              <p>Paste a YouTube link above, then use the player controls below.</p>
+            </div>
+
+            <div id="loadingOverlay" class="loading-overlay hidden">
+              <div class="spinner"></div>
+              <p id="loadingText">Preparing video…</p>
+            </div>
+
+            <!--
+              In-fullscreen controls. This lives INSIDE #playerWrap on purpose:
+              when the browser's native Fullscreen API is active on #playerWrap,
+              only #playerWrap and its descendants are visible — everything else
+              (header, sidebar, the regular controls below) disappears. Without
+              this overlay there would be no way to pause, adjust volume/speed,
+              toggle Focus Mode, or exit fullscreen while fullscreen is active.
+            -->
+            <div id="fsOverlay" class="fs-overlay hidden" aria-hidden="true">
+              <div class="fs-row fs-top">
+                <button id="fsFocusBtn" class="fs-btn" type="button">Focus Mode</button>
+                <button id="fsExitBtn" class="fs-btn fs-exit" type="button" title="Exit fullscreen">Exit Fullscreen ⤡</button>
+              </div>
+              <div class="fs-row fs-bottom">
+                <button id="fsRewindBtn" class="fs-btn" type="button" title="Back 10 seconds">−10s</button>
+                <button id="fsPlayPauseBtn" class="fs-btn fs-play" type="button" title="Play">▶</button>
+                <button id="fsForwardBtn" class="fs-btn" type="button" title="Forward 10 seconds">+10s</button>
+                <label class="fs-speed">
+                  <span>Speed</span>
+                  <select id="fsSpeedSelect" aria-label="Playback speed (fullscreen)">
+                    <option value="0.5">0.5×</option>
+                    <option value="0.75">0.75×</option>
+                    <option value="1" selected>1×</option>
+                    <option value="1.25">1.25×</option>
+                    <option value="1.5">1.5×</option>
+                    <option value="1.75">1.75×</option>
+                    <option value="2">2×</option>
+                  </select>
+                </label>
+                <button id="fsMuteBtn" class="fs-btn" type="button" title="Mute">🔊</button>
+                <input id="fsVolumeBar" class="fs-volume" type="range" min="0" max="100" value="100" step="1" aria-label="Volume (fullscreen)" />
+              </div>
+            </div>
+          </div>
+
+          <div class="video-info">
+            <div class="title-block">
+              <p class="eyebrow">NOW STUDYING</p>
+              <h2 id="videoTitle">No video loaded</h2>
+              <p id="videoIdText" class="muted">Video ID: —</p>
+            </div>
+            <div class="video-actions">
+              <button id="completeBtn" class="ghost-btn small-action" type="button">Mark Complete</button>
+              <button id="favoriteBtn" class="icon-btn" type="button" title="Add to favorites" aria-label="Add to favorites">☆</button>
+            </div>
+          </div>
+
+          <!--
+            Per-video resume prompt (Phase 4). Shown only when saved progress
+            exists for the video that just finished cueing, isn't near the
+            very start/end, and the user's Resume setting is "Ask every time".
+          -->
+          <div id="resumePrompt" class="resume-prompt hidden" role="status">
+            <span id="resumePromptText">Continue where you left off?</span>
+            <div class="resume-actions">
+              <button id="resumeBtn" type="button" class="ghost-btn">Resume</button>
+              <button id="startOverBtn" type="button" class="ghost-btn">Start Over</button>
+            </div>
+          </div>
+
+          <div class="study-controls">
+            <div class="seek-row">
+              <span id="currentTime">00:00</span>
+              <input id="progressBar" class="range progress-range" type="range" min="0" max="100" value="0" step="0.1" aria-label="Video progress" />
+              <span id="duration">00:00</span>
+            </div>
+
+            <div class="control-row">
+              <div class="control-group primary-controls">
+                <button id="prevBtn" class="control-btn" type="button" title="Previous video">⏮</button>
+                <button id="rewindBtn" class="control-btn skip-btn" type="button" title="Back 10 seconds">−10s</button>
+                <button id="playPauseBtn" class="control-btn play-main" type="button" title="Play">▶</button>
+                <button id="forwardBtn" class="control-btn skip-btn" type="button" title="Forward 10 seconds">+10s</button>
+                <button id="nextBtn" class="control-btn" type="button" title="Next video">⏭</button>
+              </div>
+
+              <div class="control-group right-controls">
+                <button id="muteBtn" class="small-icon-btn" type="button" title="Mute">🔊</button>
+                <input id="volumeBar" class="range volume-range" type="range" min="0" max="100" value="100" step="1" aria-label="Volume" />
+
+                <label class="speed-control">
+                  <span>Speed</span>
+                  <select id="speedSelect" aria-label="Playback speed">
+                    <option value="0.5">0.5×</option>
+                    <option value="0.75">0.75×</option>
+                    <option value="1" selected>1×</option>
+                    <option value="1.25">1.25×</option>
+                    <option value="1.5">1.5×</option>
+                    <option value="1.75">1.75×</option>
+                    <option value="2">2×</option>
+                  </select>
+                </label>
+
+                <label class="speed-control">
+                  <span>Quality</span>
+                  <select id="qualitySelect" aria-label="Video quality">
+                    <option value="auto">Auto</option>
+                  </select>
+                </label>
+
+                <button id="ccBtn" class="small-icon-btn" type="button" title="Turn captions on" aria-label="Toggle captions">CC</button>
+                <label class="speed-control">
+                  <span class="sr-only">Caption language</span>
+                  <select id="captionTrackSelect" aria-label="Caption language" disabled>
+                    <option value="">No captions available</option>
+                  </select>
+                </label>
+
+                <button id="fullscreenBtn" class="control-btn" type="button" title="Fullscreen">⛶</button>
+              </div>
+            </div>
+
+            <div class="study-status-row">
+              <span id="playerStateText">Waiting for video</span>
+              <span id="playlistText">Single video</span>
+              <span id="rateSupportText">Rates: checking…</span>
+              <label class="sleep-control">
+                <span>Sleep timer</span>
+                <select id="sleepTimerSelect" aria-label="Sleep timer">
+                  <option value="off" selected>Off</option>
+                  <option value="10">10 min</option>
+                  <option value="20">20 min</option>
+                  <option value="30">30 min</option>
+                  <option value="45">45 min</option>
+                  <option value="60">60 min</option>
+                  <option value="end">End of this video</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="shortcut-box">
+            <strong>Keys</strong>
+            <span>Space play/pause</span>
+            <span>← / → 5s</span>
+            <span>Shift + ← / → 10s</span>
+            <span>↑ / ↓ volume</span>
+            <span>M mute</span>
+            <span>F fullscreen</span>
+            <span>Esc exit Focus Mode</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <div class="side-card card">
+          <div class="side-heading"><h2>Saved Videos</h2><span id="historyCount" class="badge">0</span></div>
+          <div id="historyList" class="saved-list"><div class="empty-list">No saved videos yet.</div></div>
+        </div>
+
+        <div class="side-card card">
+          <div class="side-heading"><h2>Favorites</h2><span id="favoriteCount" class="badge">0</span></div>
+          <div id="favoriteList" class="saved-list"><div class="empty-list">No favorites yet.</div></div>
+        </div>
+
+        <div class="side-card card tips-card">
+          <div class="side-heading"><h2>Focus Mode</h2></div>
+          <p>Focus Mode hides the URL box, header, history and favorites so only the study player remains.</p>
+          <p>Your saved history/favorites stay in this browser.</p>
+          <p class="small-note">The official YouTube embedded player still controls ads, playback restrictions and owner-disabled embedding.</p>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="script.js"></script>
+</body>
+</html>
